@@ -1,40 +1,68 @@
 <template>
-  <div>
-    <h2>Product List</h2>
-    <ul>
-      <li v-for="product in products" :key="product.id">
-        <h3>{{ product.title }}</h3>
-        <img
-          :src="product.image"
-          alt="`${product.title}`"
-          v-if="product.image"
-        />
-        <p>category: {{ product.category }}</p>
-        <p>Description:{{ product.description }}</p>
-        <p>Price: {{ product.price }}</p>
-        <p>Rating: {{ product.rating.rate }}</p>
-        <p>Count of ratings:{{ product.rating.count }}</p>
+  <div class="p-6 max-w-7xl mx-auto">
+    <h2 class="text-2xl font-semibold mb-6">Product List</h2>
+    <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <li
+        v-for="product in products"
+        :key="product.id"
+        class="bg-white shadow rounded-lg overflow-hidden flex flex-col"
+      >
+        <div
+          class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md lg:aspect-none group-hover:opacity-75 lg:h-80 flex justify-center"
+        >
+          <img
+            class="h-full"
+            :src="product.image"
+            :alt="product.title"
+            v-if="product.image"
+          />
+        </div>
+
+        <div class="p-6 flex flex-col flex-grow">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="text-lg font-semibold text-gray-900">
+              {{ product.title }}
+            </h3>
+            <div
+              class="ml-4 bg-black text-white rounded-full px-3 py-1 text-lg font-bold"
+            >
+              ${{ product.price }}
+            </div>
+          </div>
+          <div class="text-gray-400 text-justify flex-grow">
+            <p>{{ product.description }}</p>
+          </div>
+          <div class="flex items-center mt-4">
+            <span class="text-yellow-500">{{
+              '★'.repeat(Math.round(product.rating.rate))
+            }}</span>
+            <span class="text-gray-400">{{
+              '★'.repeat(5 - Math.round(product.rating.rate))
+            }}</span>
+            <span class="text-gray-600 ml-2"
+              >({{ product.rating.count }} ratings)</span
+            >
+          </div>
+        </div>
       </li>
     </ul>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType } from 'vue'
-import { Product } from '@/views/interfaces'
-import { mapState, mapActions } from 'vuex'
+<script lang="ts" setup>
+import { onMounted, computed } from 'vue'
+import { useStore } from 'vuex'
 
-export default defineComponent({
-  name: 'ProductList',
-  computed: {
-    ...mapState('products', ['products']),
-  },
-  methods: {
-    ...mapActions('products', ['fetchProducts']),
-  },
-  created() {
-    this.fetchProducts()
-  },
+const store = useStore()
+
+const products = computed(() => store.state.products.products)
+
+const fetchProducts = () => {
+  store.dispatch('products/fetchProducts')
+}
+
+onMounted(() => {
+  fetchProducts()
 })
 </script>
 
