@@ -1,12 +1,13 @@
 <template>
   <div>
-    <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/catalog">Catalog</router-link>
-    </nav>
+    <NavBar />
     <router-view class="content" />
   </div>
 </template>
+
+<script lang="ts" setup>
+import NavBar from '@/components/NavBar/NavBar.vue'
+</script>
 
 <style lang="scss">
 #app {
@@ -29,13 +30,5 @@ nav {
   display: flex;
   justify-content: center;
   align-items: center;
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
 }
 </style>
