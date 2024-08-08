@@ -1,9 +1,11 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/catalog">Catalog</router-link>
-  </nav>
-  <router-view />
+  <div>
+    <nav>
+      <router-link to="/">Home</router-link> |
+      <router-link to="/catalog">Catalog</router-link>
+    </nav>
+    <router-view class="content" />
+  </div>
 </template>
 
 <style lang="scss">
@@ -15,9 +17,18 @@
   color: #2c3e50;
 }
 
-nav {
-  padding: 30px;
+.content {
+  height: 100vh;
+  padding-top: 35px;
+}
 
+nav {
+  height: 35px;
+  position: fixed;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   a {
     font-weight: bold;
     color: #2c3e50;

@@ -6,7 +6,9 @@ import { Product } from '@/views/interfaces'
 const state: ProductState = {
   products: [],
   allProducts: [],
+  productDetail: {} as Product,
   categories: [],
+  isLoading: false,
 }
 
 const products: Module<ProductState, RootState> = {
@@ -16,15 +18,22 @@ const products: Module<ProductState, RootState> = {
     SET_PRODUCTS(state, products) {
       state.products = products
     },
-    SET_ALL_PRODUCTS(state, products) {
-      state.allProducts = products
+    SET_ALL_PRODUCTS(state, allProducts) {
+      state.allProducts = allProducts
+    },
+    SET_PRODUCT_DETAIL(state, productDetail) {
+      state.productDetail = productDetail
     },
     SET_CATEGORIES(state, categories) {
       state.categories = categories
     },
+    SET_LOADING(state, isLoading) {
+      state.isLoading = isLoading
+    },
   },
   actions: {
     async fetchProducts({ commit, state }, filters) {
+      commit('SET_LOADING', true)
       try {
         if (filters && filters.category !== '') {
           const response = await axios.get(
@@ -52,9 +61,26 @@ const products: Module<ProductState, RootState> = {
         }
       } catch (error) {
         console.error('Failed to fetch products:', error)
+      } finally {
+        commit('SET_LOADING', false)
+      }
+    },
+    async fetchProductDetail({ commit }, id) {
+      commit('SET_LOADING', true)
+      try {
+        const response = await axios.get(
+          `https://fakestoreapi.com/products/${id}`
+        )
+        console.log(response.data.rating)
+        commit('SET_PRODUCT_DETAIL', response.data)
+      } catch (error) {
+        console.error('Failed to fetch product detail:', error)
+      } finally {
+        commit('SET_LOADING', false)
       }
     },
     async fetchCategories({ commit }) {
+      commit('SET_LOADING', true)
       try {
         const response = await axios.get(
           'https://fakestoreapi.com/products/categories'
@@ -62,6 +88,8 @@ const products: Module<ProductState, RootState> = {
         commit('SET_CATEGORIES', response.data)
       } catch (error) {
         console.error('Failed to fetch categories:', error)
+      } finally {
+        commit('SET_LOADING', false)
       }
     },
   },

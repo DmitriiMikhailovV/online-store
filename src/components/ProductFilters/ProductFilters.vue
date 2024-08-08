@@ -1,5 +1,5 @@
 <template>
-  <div class="p-6 max-w-lg mx-auto bg-white rounded-lg shadow-md space-y-6">
+  <div class="p-6 max-w-xl mx-auto">
     <h2 class="text-2xl font-semibold mb-6">Product Filters</h2>
     <div class="space-y-4">
       <div class="space-y-2">
@@ -54,8 +54,8 @@ import { ref, onMounted, computed } from 'vue'
 import { useStore } from 'vuex'
 
 const store = useStore()
-const searchInput = ref('')
-const selectedCategory = ref('')
+const searchInput = ref<string>('')
+const selectedCategory = ref<string>('')
 
 const categories = computed(() => store.state.products.categories)
 
