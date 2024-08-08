@@ -2,7 +2,10 @@
   <div class="p-6 max-w-7xl mx-auto">
     <h2 class="text-2xl font-semibold mb-6">Product List</h2>
     <LoadingSpinner v-if="isLoading" />
-    <ul v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <ul
+      v-else
+      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 overflow-auto scrollbar"
+    >
       <li
         v-for="product in products"
         :key="product.id"
