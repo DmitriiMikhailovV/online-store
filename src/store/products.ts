@@ -7,6 +7,7 @@ const state: ProductState = {
   products: [],
   allProducts: [],
   productDetail: {} as Product,
+  productCart: [],
   categories: [],
   isLoading: false,
 }
@@ -23,6 +24,12 @@ const products: Module<ProductState, RootState> = {
     },
     SET_PRODUCT_DETAIL(state, productDetail) {
       state.productDetail = productDetail
+    },
+    SET_PRODUCT_CART(state, productCart) {
+      state.productCart = productCart
+    },
+    UPDATE_CART_ITEM_QUANTITY(state, { index, quantity }) {
+      state.productCart[index].quantity = quantity
     },
     SET_CATEGORIES(state, categories) {
       state.categories = categories
@@ -71,7 +78,6 @@ const products: Module<ProductState, RootState> = {
         const response = await axios.get(
           `https://fakestoreapi.com/products/${id}`
         )
-        console.log(response.data.rating)
         commit('SET_PRODUCT_DETAIL', response.data)
       } catch (error) {
         console.error('Failed to fetch product detail:', error)
@@ -91,6 +97,22 @@ const products: Module<ProductState, RootState> = {
       } finally {
         commit('SET_LOADING', false)
       }
+    },
+    addToCart({ commit }, product) {
+      let cart = state.productCart
+      const existingProductIndex = cart.findIndex(
+        (item) => item.id === product.id
+      )
+
+      if (existingProductIndex !== -1) {
+        cart[existingProductIndex].quantity += product.quantity
+      } else {
+        cart = [...state.productCart, product]
+      }
+      commit('SET_PRODUCT_CART', cart)
+    },
+    updateCartItemQuantity({ commit, state }, { index, quantity }) {
+      commit('UPDATE_CART_ITEM_QUANTITY', { index, quantity })
     },
   },
 }

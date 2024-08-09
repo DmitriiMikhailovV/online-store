@@ -31,7 +31,7 @@
           <p
             class="self-end ml-4 bg-black text-white rounded-full px-3 py-1 text-lg font-bold inline-block mb-4"
           >
-            ${{ productDetail.price }}
+            {{ formatCurrency(productDetail.price) }}
           </p>
 
           <p class="text-gray-400 text-justify mb-4">
@@ -43,7 +43,7 @@
             <label for="quantity" class="text-gray-700 text-xl">Quantity</label>
             <div class="flex items-center">
               <button
-                class="bg-black text-white hover:bg-gray-700 px-2 py-1 rounded-l"
+                class="bg-black text-white hover:bg-gray-700 px-2 py-1 w-6 rounded-l"
                 @click="decreaseQuantity"
               >
                 -
@@ -55,7 +55,7 @@
                 class="w-12 text-center bg-white border border-gray-300 px-2 py-1"
               />
               <button
-                class="bg-black text-white hover:bg-gray-700 px-2 py-1 rounded-r"
+                class="bg-black text-white hover:bg-gray-700 px-2 py-1 w-6 rounded-r"
                 @click="increaseQuantity"
               >
                 +
@@ -63,6 +63,7 @@
             </div>
           </div>
           <button
+            @click="toCart"
             class="bg-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full"
           >
             ADD TO CART
@@ -74,7 +75,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, defineEmits } from 'vue'
 import { useStore } from 'vuex'
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner.vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -88,8 +89,17 @@ const quantity = ref<number>(1)
 const productDetail = computed(() => store.state.products.productDetail)
 const isLoading = computed(() => store.state.products.isLoading)
 
+const emit = defineEmits(['openModal'])
+
 const fetchProductDetail = () => {
   store.dispatch('products/fetchProductDetail', id.value)
+}
+
+const formatCurrency = (value: number) => {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  }).format(value)
 }
 
 const goBack = () => {
@@ -104,6 +114,14 @@ const decreaseQuantity = () => {
 
 const increaseQuantity = () => {
   quantity.value++
+}
+
+const toCart = () => {
+  store.dispatch('products/addToCart', {
+    ...productDetail.value,
+    quantity: quantity.value,
+  })
+  emit('openModal')
 }
 
 onMounted(() => {
