@@ -14,15 +14,12 @@
       >
     </ul>
     <div class="flex space-x-4 pr-4">
-      <a href="#" class="text-black hover:text-gray-600 text-lg"
+      <router-link class="text-black hover:text-gray-600 text-lg" to="/user"
         ><i class="fas fa-user"></i
-      ></a>
-      <a href="#" class="text-black hover:text-gray-600 text-lg"
-        ><i class="fas fa-heart"></i
-      ></a>
-      <a href="#" class="text-black hover:text-gray-600 text-lg"
+      ></router-link>
+      <router-link class="text-black hover:text-gray-600 text-lg" to="/cart"
         ><i class="fas fa-shopping-bag"></i
-      ></a>
+      ></router-link>
     </div>
   </nav>
 </template>
