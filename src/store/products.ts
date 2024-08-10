@@ -1,9 +1,9 @@
 import { Module } from 'vuex'
 import axios from 'axios'
-import { ProductState, RootState } from './interfaces'
+import { ProductsState, RootState } from './interfaces'
 import { Product } from '@/views/interfaces'
 
-const state: ProductState = {
+const state: ProductsState = {
   products: [],
   allProducts: [],
   productDetail: {} as Product,
@@ -12,7 +12,7 @@ const state: ProductState = {
   isLoading: false,
 }
 
-const products: Module<ProductState, RootState> = {
+const products: Module<ProductsState, RootState> = {
   namespaced: true,
   state,
   mutations: {
@@ -111,7 +111,7 @@ const products: Module<ProductState, RootState> = {
       }
       commit('SET_PRODUCT_CART', cart)
     },
-    updateCartItemQuantity({ commit, state }, { index, quantity }) {
+    updateCartItemQuantity({ commit }, { index, quantity }) {
       commit('UPDATE_CART_ITEM_QUANTITY', { index, quantity })
     },
   },

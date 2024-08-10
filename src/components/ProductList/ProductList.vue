@@ -18,7 +18,7 @@
             class="p-6 aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md lg:aspect-none group-hover:opacity-75 lg:h-80 flex justify-center"
           >
             <img
-              class="h-full"
+              class="h-full object-contain"
               :src="product.image"
               :alt="product.title"
               v-if="product.image"

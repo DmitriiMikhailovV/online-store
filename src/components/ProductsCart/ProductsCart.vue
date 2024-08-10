@@ -1,67 +1,102 @@
 <template>
-  <div>
-    <div class="space-y-4">
-      <div
-        v-for="(product, index) in cartItems"
-        :key="index"
-        class="flex items-center justify-between space-x-4"
-      >
-        <img
-          :src="product.image"
-          alt="product.title"
-          class="h-16 object-cover rounded"
-        />
-        <h6 class="text-lg text-gray-900 font-medium">
-          {{ product.title }}
-        </h6>
-        <div class="flex items-center space-x-2 text-base">
+  <div class="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div
+      class="bg-white rounded-lg shadow-lg w-full max-w-2xl max-h-screen overflow-y-auto p-6"
+    >
+      <div class="space-y-4">
+        <div
+          v-if="signedInUser.name"
+          class="text-lg text-gray-900 font-medium text-left"
+        >
+          Welcome {{ capitalizeFirstLetter(signedInUser.name.firstname) }}
+          {{ capitalizeFirstLetter(signedInUser.name.lastname) }}, you can
+          purchase now:
+        </div>
+
+        <div
+          v-for="(product, index) in cartItems"
+          :key="index"
+          class="grid grid-cols-[auto_1fr_auto_auto] items-center gap-4 h-20"
+        >
+          <img
+            :src="product.image"
+            :alt="product.title"
+            class="h-16 w-16 object-contain rounded"
+          />
+          <h6 class="text-lg text-gray-900 font-medium text-left">
+            {{ product.title }}
+          </h6>
+          <div class="flex items-center space-x-2 text-base">
+            <button
+              class="bg-black text-white hover:bg-gray-700 px-2 py-0.5 rounded-l"
+              @click="decrementQuantity(index)"
+            >
+              -
+            </button>
+            <span>{{ product.quantity }}</span>
+            <button
+              class="bg-black text-white hover:bg-gray-700 px-2 py-0.5 rounded-r"
+              @click="incrementQuantity(index)"
+            >
+              +
+            </button>
+          </div>
+          <h6 class="text-lg text-gray-900 font-medium text-right w-24">
+            {{ formatCurrency(product.price * product.quantity) }}
+          </h6>
+        </div>
+      </div>
+
+      <div class="border-t mt-4 pt-4">
+        <span class="block text-lg font-medium text-gray-900 text-right mb-4">
+          Total: {{ formatCurrency(totalCost) }}
+        </span>
+        <div class="flex justify-end items-center space-x-4">
           <button
-            class="bg-black text-white hover:bg-gray-700 px-1 py-0.5 w-4 rounded-l"
-            @click="decrementQuantity(index)"
+            type="button"
+            class="bg-gray-500 text-white px-4 py-2 font-bold hover:bg-gray-700 rounded-full"
+            @click="closeModal"
           >
-            -
+            Cancel
           </button>
-          <span>{{ product.quantity }}</span>
           <button
-            class="bg-black text-white hover:bg-gray-700 px-1 py-0.5 w-4 rounded-r"
-            @click="incrementQuantity(index)"
+            type="button"
+            class="bg-black hover:bg-gray-700 text-white font-bold px-4 py-2 rounded-full"
+            @click="purchase"
           >
-            +
+            Purchase
           </button>
         </div>
-        <h6 class="text-lg text-gray-900 font-medium">
-          {{ formatCurrency(product.price * product.quantity) }}
-        </h6>
       </div>
-    </div>
-    <div class="border-t mt-4 pt-4">
-      <span class="block text-lg font-medium text-gray-900 text-right mb-4">
-        Total: {{ formatCurrency(totalCost) }}
-      </span>
-      <div class="flex justify-end items-center space-x-4">
-        <button
-          type="button"
-          class="bg-gray-500 text-white px-4 py-2 font-bold hover:bg-gray-700 rounded-full"
-          @click="closeModal"
-        >
-          Cancel
-        </button>
-        <button
-          type="button"
-          class="bg-black hover:bg-gray-700 text-white font-bold px-4 py-2 rounded-full"
-          @click="pay"
-        >
-          Pay
-        </button>
+
+      <div
+        v-if="showAccordion"
+        class="mt-4 max-h-[calc(100vh-4rem)] overflow-y-auto"
+      >
+        <AccordionElement>
+          <LoadingSpinner v-if="isLoadingUser" />
+          <div v-else class="space-y-4 flex flex-col items-center">
+            <p class="text-lg text-gray-900 font-medium">
+              Please login to purchase
+            </p>
+            <LoginForm v-if="isLogin" @toggleMode="toggleMode" />
+            <RegisterForm v-else @toggleMode="toggleMode" />
+          </div>
+        </AccordionElement>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, defineProps, defineEmits } from 'vue'
+import { ref, computed, defineProps, defineEmits, watch } from 'vue'
 import { Product } from '@/views/interfaces'
 import { useStore } from 'vuex'
+import LoginForm from '@/components/Forms/LoginForm.vue'
+import RegisterForm from '@/components/Forms/RegisterForm.vue'
+import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner.vue'
+import AccordionElement from '@/components/AccordionElement/AccordionElement.vue'
+import { capitalizeFirstLetter } from '@/utils/helpers'
 
 const props = defineProps<{
   cartItems: Array<Product & { quantity: number }>
@@ -69,6 +104,23 @@ const props = defineProps<{
 
 const emit = defineEmits(['closeModal'])
 const store = useStore()
+const signedInUser = computed(() => store.state.users.signedInUser)
+const isLoadingUser = computed(() => store.state.users.isLoading)
+const totalCost = computed(() => {
+  return props.cartItems.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0
+  )
+})
+
+watch(signedInUser, (newVal) => {
+  if (newVal) {
+    showAccordion.value = false
+  }
+})
+
+const showAccordion = ref(false)
+const isLogin = ref(true)
 
 const closeModal = () => {
   emit('closeModal')
@@ -99,15 +151,16 @@ const decrementQuantity = (index: number) => {
   }
 }
 
-const totalCost = computed(() => {
-  return props.cartItems.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0
-  )
-})
+const toggleMode = () => {
+  isLogin.value = !isLogin.value
+}
 
-const pay = () => {
-  console.log('pay')
+const purchase = () => {
+  if (Object.keys(signedInUser.value).length === 0) {
+    showAccordion.value = true
+  } else {
+    console.log('purchased')
+  }
 }
 </script>
 

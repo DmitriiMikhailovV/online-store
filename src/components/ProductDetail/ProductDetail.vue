@@ -77,8 +77,8 @@
 <script lang="ts" setup>
 import { ref, onMounted, computed, defineEmits } from 'vue'
 import { useStore } from 'vuex'
-import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner.vue'
 import { useRoute, useRouter } from 'vue-router'
+import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner.vue'
 
 const store = useStore()
 const route = useRoute()
