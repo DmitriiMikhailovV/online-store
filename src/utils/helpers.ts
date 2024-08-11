@@ -21,3 +21,12 @@ export const capitalizeFirstLetter = (input: string): string => {
   if (input.length === 0) return input
   return input.charAt(0).toUpperCase() + input.slice(1)
 }
+
+export const capitalizeLettersStrings = (input: string | string[]): string => {
+  if (typeof input === 'string') {
+    return input.charAt(0).toUpperCase() + input.slice(1)
+  } else if (Array.isArray(input)) {
+    return input.map((word) => word.charAt(0).toUpperCase()).join('')
+  }
+  return ''
+}

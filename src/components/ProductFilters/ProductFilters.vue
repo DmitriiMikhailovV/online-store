@@ -57,7 +57,9 @@ const store = useStore()
 const searchInput = ref<string>('')
 const selectedCategory = ref<string>('')
 
-const categories = computed(() => store.state.products.categories)
+const categories = computed<Array<string>>(
+  () => store.state.products.categories
+)
 
 const fetchCategories = () => {
   store.dispatch('products/fetchCategories')

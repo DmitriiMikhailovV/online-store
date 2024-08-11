@@ -1,10 +1,10 @@
 import { Module } from 'vuex'
 import axios from 'axios'
-import { UsersState, RootState, User } from './interfaces'
+import { UsersState, RootState } from './interfaces'
 import { decodeToken } from '../utils/helpers'
 
 const state: UsersState = {
-  signedInUser: {} as User,
+  signedInUser: null,
   token: '',
   isLoading: false,
 }

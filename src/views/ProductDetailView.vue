@@ -13,10 +13,13 @@ import ModalWindow from '@/components/ModalWindow/ModalWindow.vue'
 import ProductsCart from '@/components/ProductsCart/ProductsCart.vue'
 import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
+import { Product } from './interfaces'
 
 const store = useStore()
 
-const productCart = computed(() => store.state.products.productCart)
+const productCart = computed<Array<Product & { quantity: number }>>(
+  () => store.state.products.productCart
+)
 
 const isModalOpen = ref(false)
 

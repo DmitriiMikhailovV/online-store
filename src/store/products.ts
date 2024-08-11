@@ -6,7 +6,7 @@ import { Product } from '@/views/interfaces'
 const state: ProductsState = {
   products: [],
   allProducts: [],
-  productDetail: {} as Product,
+  productDetail: null,
   productCart: [],
   categories: [],
   isLoading: false,

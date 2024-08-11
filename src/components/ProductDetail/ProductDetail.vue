@@ -5,6 +5,7 @@
     class="flex justify-center items-start md:items-center bg-white h-full"
   >
     <div
+      v-if="productDetail"
       class="max-w-5xl w-4/5 bg-white rounded-lg shadow-md flex flex-col md:flex-row p-6"
     >
       <img
@@ -79,6 +80,7 @@ import { ref, onMounted, computed, defineEmits } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner.vue'
+import { Product } from '@/views/interfaces'
 
 const store = useStore()
 const route = useRoute()
@@ -86,8 +88,10 @@ const router = useRouter()
 const id = ref<string>(route.params.id as string)
 const quantity = ref<number>(1)
 
-const productDetail = computed(() => store.state.products.productDetail)
-const isLoading = computed(() => store.state.products.isLoading)
+const productDetail = computed<Product>(
+  () => store.state.products.productDetail
+)
+const isLoading = computed<boolean>(() => store.state.products.isLoading)
 
 const emit = defineEmits(['openModal'])
 

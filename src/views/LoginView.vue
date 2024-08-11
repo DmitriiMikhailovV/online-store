@@ -18,11 +18,12 @@ import { useRouter } from 'vue-router'
 import LoginForm from '@/components/Forms/LoginForm.vue'
 import RegisterForm from '@/components/Forms/RegisterForm.vue'
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner.vue'
+import { User } from '@/store/interfaces'
 
 const store = useStore()
 const router = useRouter()
-const signedInUser = computed(() => store.state.users.signedInUser)
-const isLoading = computed(() => store.state.users.isLoading)
+const signedInUser = computed<User>(() => store.state.users.signedInUser)
+const isLoading = computed<boolean>(() => store.state.users.isLoading)
 
 watch(signedInUser, (newVal) => {
   if (newVal) {

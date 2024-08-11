@@ -5,7 +5,7 @@
     >
       <div class="space-y-4">
         <div
-          v-if="signedInUser.name"
+          v-if="signedInUser && signedInUser.name"
           class="text-lg text-gray-900 font-medium text-left"
         >
           Welcome {{ capitalizeFirstLetter(signedInUser.name.firstname) }}
@@ -97,6 +97,7 @@ import RegisterForm from '@/components/Forms/RegisterForm.vue'
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner.vue'
 import AccordionElement from '@/components/AccordionElement/AccordionElement.vue'
 import { capitalizeFirstLetter } from '@/utils/helpers'
+import { User } from '@/store/interfaces'
 
 const props = defineProps<{
   cartItems: Array<Product & { quantity: number }>
@@ -104,9 +105,9 @@ const props = defineProps<{
 
 const emit = defineEmits(['closeModal'])
 const store = useStore()
-const signedInUser = computed(() => store.state.users.signedInUser)
-const isLoadingUser = computed(() => store.state.users.isLoading)
-const totalCost = computed(() => {
+const signedInUser = computed<User>(() => store.state.users.signedInUser)
+const isLoadingUser = computed<boolean>(() => store.state.users.isLoading)
+const totalCost = computed<number>(() => {
   return props.cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
     0

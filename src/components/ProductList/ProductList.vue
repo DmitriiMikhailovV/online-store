@@ -61,11 +61,12 @@
 import { onMounted, computed } from 'vue'
 import { useStore } from 'vuex'
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner.vue'
+import { Product } from '@/views/interfaces'
 
 const store = useStore()
 
-const products = computed(() => store.state.products.products)
-const isLoading = computed(() => store.state.products.isLoading)
+const products = computed<Array<Product>>(() => store.state.products.products)
+const isLoading = computed<boolean>(() => store.state.products.isLoading)
 
 const fetchProducts = () => {
   store.dispatch('products/fetchProducts')

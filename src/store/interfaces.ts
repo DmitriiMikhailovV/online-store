@@ -7,7 +7,7 @@ export interface RootState {
 
 export interface ProductsState {
   products: Array<Product>
-  productDetail: Product
+  productDetail: Product | null
   productCart: Array<Product & { quantity: number }>
   allProducts: Array<Product>
   categories: Array<string>
@@ -15,7 +15,7 @@ export interface ProductsState {
 }
 
 export interface UsersState {
-  signedInUser: User
+  signedInUser: User | null
   token: string
   isLoading: boolean
 }
