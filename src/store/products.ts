@@ -31,6 +31,9 @@ const products: Module<ProductsState, RootState> = {
     UPDATE_CART_ITEM_QUANTITY(state, { index, quantity }) {
       state.productCart[index].quantity = quantity
     },
+    REMOVE_CART_ITEM(state, index) {
+      state.productCart.splice(index, 1)
+    },
     SET_CATEGORIES(state, categories) {
       state.categories = categories
     },
@@ -110,6 +113,9 @@ const products: Module<ProductsState, RootState> = {
         cart = [...state.productCart, product]
       }
       commit('SET_PRODUCT_CART', cart)
+    },
+    removeCartItem({ commit }, index) {
+      commit('REMOVE_CART_ITEM', index)
     },
     updateCartItemQuantity({ commit }, { index, quantity }) {
       commit('UPDATE_CART_ITEM_QUANTITY', { index, quantity })

@@ -16,7 +16,7 @@
         <div
           v-for="(product, index) in cartItems"
           :key="index"
-          class="grid grid-cols-[auto_1fr_auto_auto] items-center gap-4 h-20"
+          class="grid grid-cols-[auto_1fr_auto_auto_auto] items-center gap-4 h-20"
         >
           <img
             :src="product.image"
@@ -28,14 +28,14 @@
           </h6>
           <div class="flex items-center space-x-2 text-base">
             <button
-              class="bg-black text-white hover:bg-gray-700 px-2 py-0.5 rounded-l"
+              class="bg-black text-white hover:bg-gray-700 px-2 py-0.5 w-6 rounded-l"
               @click="decrementQuantity(index)"
             >
               -
             </button>
             <span>{{ product.quantity }}</span>
             <button
-              class="bg-black text-white hover:bg-gray-700 px-2 py-0.5 rounded-r"
+              class="bg-black text-white hover:bg-gray-700 px-2 py-0.5 w-6 rounded-r"
               @click="incrementQuantity(index)"
             >
               +
@@ -44,6 +44,12 @@
           <h6 class="text-lg text-gray-900 font-medium text-right w-24">
             {{ formatCurrency(product.price * product.quantity) }}
           </h6>
+          <button
+            class="bg-gray-500 text-white hover:bg-gray-700 px-2 py-1 h-8 w-8 rounded-full"
+            @click="removeProduct(index)"
+          >
+            &#10005;
+          </button>
         </div>
       </div>
 
@@ -57,12 +63,13 @@
             class="bg-gray-500 text-white px-4 py-2 font-bold hover:bg-gray-700 rounded-full"
             @click="closeModal"
           >
-            Cancel
+            Continue shopping
           </button>
           <button
             type="button"
-            class="bg-black hover:bg-gray-700 text-white font-bold px-4 py-2 rounded-full"
+            class="bg-black hover:bg-gray-700 text-white font-bold px-4 py-2 rounded-full disabled:bg-gray-400 disabled:cursor-not-allowed"
             @click="purchase"
+            :disabled="cartItems.length === 0"
           >
             Purchase
           </button>
@@ -152,12 +159,16 @@ const decrementQuantity = (index: number) => {
   }
 }
 
+const removeProduct = (index: number) => {
+  store.dispatch('products/removeCartItem', index)
+}
+
 const toggleMode = () => {
   isLogin.value = !isLogin.value
 }
 
 const purchase = () => {
-  if (Object.keys(signedInUser.value).length === 0) {
+  if (!signedInUser.value) {
     showAccordion.value = true
   } else {
     console.log('purchased')
