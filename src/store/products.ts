@@ -8,6 +8,8 @@ const state: ProductsState = {
   allProducts: [],
   productDetail: null,
   productCart: [],
+  userCart: null,
+  purchasedUserCarts: [],
   categories: [],
   isLoading: false,
 }
@@ -28,11 +30,11 @@ const products: Module<ProductsState, RootState> = {
     SET_PRODUCT_CART(state, productCart) {
       state.productCart = productCart
     },
-    UPDATE_CART_ITEM_QUANTITY(state, { index, quantity }) {
-      state.productCart[index].quantity = quantity
+    SET_USER_CART(state, userCart) {
+      state.userCart = userCart
     },
-    REMOVE_CART_ITEM(state, index) {
-      state.productCart.splice(index, 1)
+    SET_PURCHASED_CART(state, purchasedUserCarts) {
+      state.purchasedUserCarts = purchasedUserCarts
     },
     SET_CATEGORIES(state, categories) {
       state.categories = categories
@@ -45,30 +47,31 @@ const products: Module<ProductsState, RootState> = {
     async fetchProducts({ commit, state }, filters) {
       commit('SET_LOADING', true)
       try {
-        if (filters && filters.category !== '') {
+        let products = []
+        if (filters?.category) {
           const response = await axios.get(
             `https://fakestoreapi.com/products/category/${filters.category}`
           )
-          commit('SET_PRODUCTS', response.data)
+          products = response.data
         } else {
           if (state.allProducts.length === 0) {
             const response = await axios.get(
               'https://fakestoreapi.com/products'
             )
             commit('SET_ALL_PRODUCTS', response.data)
+            products = response.data
+          } else {
+            products = state.allProducts
           }
 
-          let filteredProducts = state.allProducts
-
-          if (filters && filters.search !== '') {
+          if (filters?.search) {
             const searchQuery = filters.search.toLowerCase()
-            filteredProducts = state.allProducts.filter((product: Product) =>
+            products = products.filter((product: Product) =>
               product.title.toLowerCase().includes(searchQuery)
             )
           }
-
-          commit('SET_PRODUCTS', filteredProducts)
         }
+        commit('SET_PRODUCTS', products)
       } catch (error) {
         console.error('Failed to fetch products:', error)
       } finally {
@@ -101,7 +104,7 @@ const products: Module<ProductsState, RootState> = {
         commit('SET_LOADING', false)
       }
     },
-    addToCart({ commit }, product) {
+    addToCart({ commit, state, rootState }, product) {
       let cart = state.productCart
       const existingProductIndex = cart.findIndex(
         (item) => item.id === product.id
@@ -112,13 +115,67 @@ const products: Module<ProductsState, RootState> = {
       } else {
         cart = [...state.productCart, product]
       }
+
       commit('SET_PRODUCT_CART', cart)
+
+      const user = rootState.users.signedInUser
+      if (user) {
+        const userCart = {
+          user: user,
+          cart: cart,
+        }
+
+        commit('SET_USER_CART', userCart)
+      }
     },
-    removeCartItem({ commit }, index) {
-      commit('REMOVE_CART_ITEM', index)
+    removeCartItem({ commit, state, rootState }, index) {
+      const updatedCart = state.productCart.filter((_, i) => i !== index)
+
+      commit('SET_PRODUCT_CART', updatedCart)
+
+      const user = rootState.users.signedInUser
+      if (user) {
+        const userCart = {
+          user: user,
+          cart: updatedCart,
+        }
+
+        commit('SET_USER_CART', userCart)
+      }
     },
-    updateCartItemQuantity({ commit }, { index, quantity }) {
-      commit('UPDATE_CART_ITEM_QUANTITY', { index, quantity })
+    updateCartItemQuantity({ commit, state, rootState }, { index, quantity }) {
+      const productCart = state.productCart.map((item, i) =>
+        i === index ? { ...item, quantity } : item
+      )
+
+      commit('SET_PRODUCT_CART', productCart)
+
+      const user = rootState.users.signedInUser
+      if (user) {
+        const userCart = {
+          user: user,
+          cart: productCart,
+        }
+
+        commit('SET_USER_CART', userCart)
+      }
+    },
+    setUserCart({ commit }, userCart) {
+      commit('SET_USER_CART', userCart)
+    },
+    setPurchasedCart({ commit, state }) {
+      const purchaseDate = new Date().toISOString()
+      const updatedUserCart = {
+        ...state.userCart,
+        purchaseDate,
+      }
+      const updatedPurchasedUserCarts = [
+        ...state.purchasedUserCarts,
+        updatedUserCart,
+      ]
+      commit('SET_PURCHASED_CART', updatedPurchasedUserCarts)
+      commit('SET_PRODUCT_CART', [])
+      commit('SET_USER_CART', null)
     },
   },
 }

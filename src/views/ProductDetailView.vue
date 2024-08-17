@@ -2,7 +2,10 @@
   <div>
     <ProductDetail @openModal="openModal" />
     <ModalWindow :isModalOpen="isModalOpen" @closeModal="closeModal">
-      <ProductsCart :cartItems="productCart" @closeModal="closeModal" />
+      <ProductsCart
+        :cartItems="productCart"
+        @closeModalToCatalog="closeModalToCatalog"
+      />
     </ModalWindow>
   </div>
 </template>
@@ -12,6 +15,7 @@ import ProductDetail from '@/components/ProductDetail/ProductDetail.vue'
 import ModalWindow from '@/components/ModalWindow/ModalWindow.vue'
 import ProductsCart from '@/components/ProductsCart/ProductsCart.vue'
 import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { Product } from './interfaces'
 
@@ -21,6 +25,8 @@ const productCart = computed<Array<Product & { quantity: number }>>(
   () => store.state.products.productCart
 )
 
+const router = useRouter()
+
 const isModalOpen = ref(false)
 
 const openModal = () => {
@@ -29,5 +35,10 @@ const openModal = () => {
 
 const closeModal = () => {
   isModalOpen.value = false
+}
+
+const closeModalToCatalog = () => {
+  isModalOpen.value = false
+  router.push('/catalog')
 }
 </script>

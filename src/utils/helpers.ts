@@ -30,3 +30,21 @@ export const capitalizeLettersStrings = (input: string | string[]): string => {
   }
   return ''
 }
+
+export const formatCurrency = (value: number) => {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  }).format(value)
+}
+
+export const formatPurchaseDate = (date: string): string => {
+  const options: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  }
+  return new Date(date).toLocaleDateString('en-US', options)
+}

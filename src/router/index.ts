@@ -4,12 +4,14 @@ import CatalogView from '../views/CatalogView.vue'
 import ProductDetailView from '../views/ProductDetailView.vue'
 import NotFoundView from '../views/NotFoundView.vue'
 import LoginView from '../views/LoginView.vue'
+import UserCartsView from '../views/UserCartsView.vue'
 
 const routes: Array<RouteRecordRaw> = [
   { path: '/', name: 'Home', component: HomeView },
   { path: '/catalog', name: 'Catalog', component: CatalogView },
   { path: '/product/:id', name: 'ProductDetail', component: ProductDetailView },
   { path: '/user', name: 'User', component: LoginView },
+  { path: '/carts', name: 'Carts', component: UserCartsView },
   { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFoundView },
 ]
 

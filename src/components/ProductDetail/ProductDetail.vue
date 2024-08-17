@@ -81,6 +81,7 @@ import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner.vue'
 import { Product } from '@/views/interfaces'
+import { formatCurrency } from '@/utils/helpers'
 
 const store = useStore()
 const route = useRoute()
@@ -97,13 +98,6 @@ const emit = defineEmits(['openModal'])
 
 const fetchProductDetail = () => {
   store.dispatch('products/fetchProductDetail', id.value)
-}
-
-const formatCurrency = (value: number) => {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-  }).format(value)
 }
 
 const goBack = () => {

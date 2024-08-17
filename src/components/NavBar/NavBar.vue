@@ -64,7 +64,10 @@
         to="/user"
         ><i class="fas fa-user"></i
       ></router-link>
-      <router-link class="text-black hover:text-gray-600 text-lg" to="/cart"
+      <router-link
+        v-if="signedInUser"
+        class="text-black hover:text-gray-600 text-lg"
+        to="/carts"
         ><i class="fas fa-shopping-bag"></i
       ></router-link>
     </div>

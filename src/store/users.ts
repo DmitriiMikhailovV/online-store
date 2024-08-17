@@ -28,7 +28,7 @@ const products: Module<UsersState, RootState> = {
   },
 
   actions: {
-    async loginUser({ commit }, payload) {
+    async loginUser({ commit, dispatch, state, rootState }, payload) {
       commit('SET_LOADING', true)
       try {
         const responseToken = await axios.post(
@@ -43,6 +43,16 @@ const products: Module<UsersState, RootState> = {
         )
         commit('SET_TOKEN', responseToken.data.token)
         commit('SET_SIGNED_IN_USER', responseUser.data)
+
+        const cart = rootState.products.productCart
+
+        if (cart.length > 0) {
+          const userCart = {
+            user: state.signedInUser,
+            cart: cart,
+          }
+          dispatch('products/setUserCart', userCart, { root: true })
+        }
       } catch (error) {
         console.error('Failed to log in', error)
       } finally {
