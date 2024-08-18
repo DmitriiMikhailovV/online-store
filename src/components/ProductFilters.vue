@@ -6,45 +6,36 @@
         <label class="block text-sm font-medium text-gray-700 text-left"
           >Search:</label
         >
-        <input
+        <Input
           type="text"
+          id="searchInput"
           v-model="searchInput"
+          styleType="form"
           placeholder="Search products..."
-          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-black focus:border-black sm:text-sm"
         />
       </div>
       <div class="space-y-2">
-        <label class="block text-sm font-medium text-gray-700 text-left"
-          >Category:</label
-        >
-        <select
+        <Select
+          id="categorySelect"
           v-model="selectedCategory"
-          class="mt-1 block w-full pl-3 pr-10 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-black focus:border-black sm:text-sm custom-select"
-        >
-          <option value="">All</option>
-          <option
-            v-for="category in categories"
-            :key="category"
-            :value="category"
-          >
-            {{ category }}
-          </option>
-        </select>
+          :options="categoryOptions"
+          label="Category:"
+        />
       </div>
     </div>
     <div class="flex space-x-4 mt-6">
-      <button
+      <Button
+        label="Apply"
+        type="button"
+        styleType="main"
         @click="applyFilters"
-        class="bg-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full"
-      >
-        Apply
-      </button>
-      <button
+      />
+      <Button
+        label="Reset"
+        type="button"
+        styleType="secondary"
         @click="resetFilters"
-        class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full"
-      >
-        Reset
-      </button>
+      />
     </div>
   </div>
 </template>
@@ -52,6 +43,7 @@
 <script lang="ts" setup>
 import { ref, onMounted, computed } from 'vue'
 import { useStore } from 'vuex'
+import { Button, Input, Select } from '@/components/generics'
 
 const store = useStore()
 const searchInput = ref<string>('')
@@ -59,6 +51,13 @@ const selectedCategory = ref<string>('')
 
 const categories = computed<Array<string>>(
   () => store.state.products.categories
+)
+
+const categoryOptions = computed(() =>
+  categories.value.map((category) => ({
+    value: category,
+    text: category,
+  }))
 )
 
 const fetchCategories = () => {

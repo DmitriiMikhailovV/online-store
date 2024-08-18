@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import CatalogView from '../views/CatalogView.vue'
-import ProductDetailView from '../views/ProductDetailView.vue'
-import NotFoundView from '../views/NotFoundView.vue'
-import LoginView from '../views/LoginView.vue'
-import UserCartsView from '../views/UserCartsView.vue'
+import HomeView from '@/views/HomeView.vue'
+import CatalogView from '@/views/CatalogView.vue'
+import ProductDetailView from '@/views/ProductDetailView.vue'
+import NotFoundView from '@/views/NotFoundView.vue'
+import LoginView from '@/views/LoginView.vue'
+import UserCartsView from '@/views/UserCartsView.vue'
 
 const routes: Array<RouteRecordRaw> = [
   { path: '/', name: 'Home', component: HomeView },

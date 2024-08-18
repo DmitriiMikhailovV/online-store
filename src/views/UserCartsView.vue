@@ -18,11 +18,10 @@
 </template>
 
 <script lang="ts" setup>
-import ProductRow from '@/components/ProductRow/ProductRow.vue'
-import PurchasedUserCarts from '@/components/PurchasedUserCarts/PurchasedUserCarts.vue'
 import { computed } from 'vue'
 import { useStore } from 'vuex'
-import { UserCart } from '@/store/interfaces'
+import { ProductRow, PurchasedUserCarts } from '@/components'
+import { UserCart } from '@/utils/interfaces'
 
 const store = useStore()
 

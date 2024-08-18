@@ -33,26 +33,24 @@
           >
             <AccordionElement>
               <div class="text-left">
-                <div>
-                  <p class="text-gray-400">First Name:</p>
-                  <p class="text-gray-900">
-                    {{ capitalizeFirstLetter(firstName) }}
-                  </p>
-                </div>
-                <div>
-                  <p class="text-gray-400">Last Name:</p>
-                  <p class="text-gray-900">
-                    {{ capitalizeFirstLetter(lastName) }}
-                  </p>
-                </div>
-                <div v-if="signedInUser.email">
-                  <p class="text-gray-400">Email:</p>
-                  <p class="text-gray-900">{{ signedInUser.email }}</p>
-                </div>
-                <div v-if="signedInUser.username">
-                  <p class="text-gray-400">Username:</p>
-                  <p class="text-gray-900">{{ signedInUser.username }}</p>
-                </div>
+                <UserFieldDisplay
+                  label="First Name"
+                  :value="capitalizeFirstLetter(firstName)"
+                />
+                <UserFieldDisplay
+                  label="Last Name"
+                  :value="capitalizeFirstLetter(lastName)"
+                />
+                <UserFieldDisplay
+                  v-if="signedInUser.email"
+                  label="Email"
+                  :value="signedInUser.email"
+                />
+                <UserFieldDisplay
+                  v-if="signedInUser.username"
+                  label="Username"
+                  :value="signedInUser.username"
+                />
               </div>
             </AccordionElement>
           </div>
@@ -77,13 +75,13 @@
 <script lang="ts" setup>
 import { computed, watch, ref, onMounted, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
-import logo from '@/assets/shop.png'
-import { User } from '@/store/interfaces'
+import { UserFieldDisplay, AccordionElement } from '@/components/generics'
 import {
   capitalizeFirstLetter,
   capitalizeLettersStrings,
 } from '@/utils/helpers'
-import AccordionElement from '@/components/AccordionElement/AccordionElement.vue'
+import { User } from '@/utils/interfaces'
+import logo from '@/assets/shop.png'
 
 const store = useStore()
 

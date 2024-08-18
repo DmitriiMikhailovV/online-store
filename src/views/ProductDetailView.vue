@@ -11,13 +11,11 @@
 </template>
 
 <script lang="ts" setup>
-import ProductDetail from '@/components/ProductDetail/ProductDetail.vue'
-import ModalWindow from '@/components/ModalWindow/ModalWindow.vue'
-import ProductsCart from '@/components/ProductsCart/ProductsCart.vue'
 import { ref, computed } from 'vue'
-import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
-import { Product } from './interfaces'
+import { useRouter } from 'vue-router'
+import { ProductDetail, ModalWindow, ProductsCart } from '@/components'
+import { Product } from '@/utils/interfaces'
 
 const store = useStore()
 

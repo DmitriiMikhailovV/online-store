@@ -1,7 +1,7 @@
 import { Module } from 'vuex'
 import axios from 'axios'
-import { UsersState, RootState } from './interfaces'
-import { decodeToken } from '../utils/helpers'
+import { decodeToken } from '@/utils/helpers'
+import { UsersState, RootState } from '@/utils/interfaces'
 
 const state: UsersState = {
   signedInUser: null,

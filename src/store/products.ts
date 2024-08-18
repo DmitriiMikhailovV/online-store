@@ -1,7 +1,6 @@
 import { Module } from 'vuex'
 import axios from 'axios'
-import { ProductsState, RootState } from './interfaces'
-import { Product } from '@/views/interfaces'
+import { ProductsState, RootState, Product } from '@/utils/interfaces'
 
 const state: ProductsState = {
   products: [],

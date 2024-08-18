@@ -12,40 +12,40 @@
     <div
       v-for="(product, index) in cartItems"
       :key="index"
-      class="grid grid-cols-[auto_1fr_auto_auto_auto] items-center gap-4 h-20"
+      class="flex flex-wrap sm:flex-nowrap justify-start items-center space-x-4 space-y-4"
     >
       <img
         :src="product.image"
         :alt="product.title"
-        class="h-16 w-16 object-contain rounded"
+        class="h-20 w-16 object-contain rounded"
       />
       <h6 class="text-lg text-gray-900 font-medium text-left">
         {{ product.title }}
       </h6>
       <div class="flex items-center space-x-2 text-base">
-        <button
-          class="bg-black text-white hover:bg-gray-700 px-2 py-0.5 w-6 rounded-l"
+        <Button
+          label="-"
+          type="button"
+          styleType="countDecrement"
           @click="decrementQuantity(index)"
-        >
-          -
-        </button>
+        />
         <span>{{ product.quantity }}</span>
-        <button
-          class="bg-black text-white hover:bg-gray-700 px-2 py-0.5 w-6 rounded-r"
+        <Button
+          label="+"
+          type="button"
+          styleType="countIncrement"
           @click="incrementQuantity(index)"
-        >
-          +
-        </button>
+        />
       </div>
-      <h6 class="text-lg text-gray-900 font-medium text-right w-24">
+      <h6 class="text-lg text-gray-900 font-medium text-right">
         {{ formatCurrency(product.price * product.quantity) }}
       </h6>
-      <button
-        class="bg-gray-500 text-white hover:bg-gray-700 px-2 py-1 h-8 w-8 rounded-full"
+      <Button
+        label='<i class="fas fa-minus"></i>'
+        type="button"
+        styleType="removeItem"
         @click="removeProduct(index)"
-      >
-        <i class="fas fa-minus"></i>
-      </button>
+      />
     </div>
   </div>
 
@@ -53,22 +53,22 @@
     <span class="block text-lg font-medium text-gray-900 text-right mb-4">
       Total: {{ formatCurrency(totalCost) }}
     </span>
-    <div class="flex justify-end items-center space-x-4">
-      <button
+    <div
+      class="flex flex-col sm:flex-row justify-end items-end sm:items-center space-y-2 sm:space-y-0 sm:space-x-4"
+    >
+      <Button
+        label="Go to Catalog"
         type="button"
-        class="bg-gray-500 text-white px-4 py-2 font-bold hover:bg-gray-700 rounded-full"
+        styleType="secondary"
         @click="closeModalToCatalog"
-      >
-        Go to Catalog
-      </button>
-      <button
+      />
+      <Button
+        label="Purchase"
         type="button"
-        class="bg-black hover:bg-gray-700 text-white font-bold px-4 py-2 rounded-full disabled:bg-gray-400 disabled:cursor-not-allowed"
+        styleType="MainNoFull"
         @click="purchase"
         :disabled="cartItems.length === 0"
-      >
-        Purchase
-      </button>
+      />
     </div>
   </div>
 
@@ -78,7 +78,7 @@
   >
     <AccordionElement>
       <LoadingSpinner v-if="isLoadingUser" />
-      <div v-else class="space-y-4 flex flex-col items-center">
+      <div v-else class="flex flex-col items-center">
         <p class="text-lg text-gray-900 font-medium">
           Please login to purchase
         </p>
@@ -91,15 +91,12 @@
 
 <script lang="ts" setup>
 import { ref, computed, defineProps, defineEmits, watch } from 'vue'
-import { Product } from '@/views/interfaces'
 import { useStore } from 'vuex'
-import LoginForm from '@/components/Forms/LoginForm.vue'
-import RegisterForm from '@/components/Forms/RegisterForm.vue'
-import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner.vue'
-import AccordionElement from '@/components/AccordionElement/AccordionElement.vue'
-import { capitalizeFirstLetter, formatCurrency } from '@/utils/helpers'
-import { User } from '@/store/interfaces'
 import { useRouter } from 'vue-router'
+import { LoginForm, RegisterForm } from '@/components'
+import { LoadingSpinner, Button, AccordionElement } from '@/components/generics'
+import { capitalizeFirstLetter, formatCurrency } from '@/utils/helpers'
+import { Product, User } from '@/utils/interfaces'
 
 const props = defineProps<{
   cartItems: Array<Product & { quantity: number }>
