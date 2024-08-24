@@ -93,8 +93,8 @@ const isAccordionOpen = ref(false)
 
 watch(signedInUser, (newVal) => {
   if (newVal) {
-    firstName.value = signedInUser.value.name.firstname
-    lastName.value = signedInUser.value.name.lastname
+    firstName.value = signedInUser.value.first_name
+    lastName.value = signedInUser.value.last_name
   }
 })
 

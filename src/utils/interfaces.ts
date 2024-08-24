@@ -51,10 +51,6 @@ export interface User {
   email: string
   username: string
   password: string
-  name: Name
-}
-
-export interface Name {
-  firstname: string
-  lastname: string
+  first_name: string
+  last_name: string
 }

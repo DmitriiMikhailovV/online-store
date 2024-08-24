@@ -1,12 +1,11 @@
 <template>
   <div class="space-y-4">
     <div
-      v-if="signedInUser && signedInUser.name"
+      v-if="signedInUser"
       class="text-lg text-gray-900 font-medium text-left"
     >
-      Welcome {{ capitalizeFirstLetter(signedInUser.name.firstname) }}
-      {{ capitalizeFirstLetter(signedInUser.name.lastname) }}, you can purchase
-      now:
+      Welcome {{ capitalizeFirstLetter(signedInUser.first_name) }}
+      {{ capitalizeFirstLetter(signedInUser.last_name) }}, you can purchase now:
     </div>
 
     <div

@@ -31,9 +31,8 @@ import { useStore } from 'vuex'
 import { Input, Button } from '@/components/generics'
 
 // Hardcoded data for login of user
-// Doesn't matter because the login works only preexisting user on this API
-const userName = ref('johnd')
-const password = ref('m38rmF$')
+const userName = ref('TestUserName')
+const password = ref('password123')
 
 const store = useStore()
 

@@ -31,18 +31,15 @@ const products: Module<UsersState, RootState> = {
     async loginUser({ commit, dispatch, state, rootState }, payload) {
       commit('SET_LOADING', true)
       try {
-        const responseToken = await axios.post(
-          'https://fakestoreapi.com/auth/login',
-          payload
+        const response = await axios.post(
+          `${process.env.VUE_APP_BASE_URL}/token`,
+          {
+            username: payload.username,
+            password: payload.password,
+          }
         )
-        const decodedToken = decodeToken(responseToken.data.token)
-        const userId = decodedToken.sub
-
-        const responseUser = await axios.get(
-          `https://fakestoreapi.com/users/${userId}`
-        )
-        commit('SET_TOKEN', responseToken.data.token)
-        commit('SET_SIGNED_IN_USER', responseUser.data)
+        commit('SET_TOKEN', response.data.access)
+        commit('SET_SIGNED_IN_USER', response.data.user)
 
         const cart = rootState.products.productCart
 
@@ -62,24 +59,16 @@ const products: Module<UsersState, RootState> = {
     async registerUser({ commit }, payload) {
       commit('SET_LOADING', true)
       try {
-        //after registration must be sent token but this API does't return token
-        await axios.post('https://fakestoreapi.com/users', payload)
-        //below is imitation of login with token
-        const responseToken = await axios.post(
-          'https://fakestoreapi.com/auth/login',
+        await axios.post(`${process.env.VUE_APP_BASE_URL}/register/`, payload)
+        const response = await axios.post(
+          `${process.env.VUE_APP_BASE_URL}/token`,
           {
             username: payload.username,
             password: payload.password,
           }
         )
-        const decodedToken = decodeToken(responseToken.data.token)
-        const userId = decodedToken.sub
-        const responseUser = await axios.get(
-          `https://fakestoreapi.com/users/${userId}`
-        )
-
-        commit('SET_TOKEN', responseToken.data.token)
-        commit('SET_SIGNED_IN_USER', responseUser.data)
+        commit('SET_TOKEN', response.data.access)
+        commit('SET_SIGNED_IN_USER', response.data.user)
       } catch (error) {
         console.error('Failed to register', error)
       } finally {

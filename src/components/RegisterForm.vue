@@ -47,13 +47,12 @@ import { useStore } from 'vuex'
 import { Input, Button } from '@/components/generics'
 
 // Hardcoded data for registration of user
-// Doesn't matter because the registration on this API doesn't work
-const email = ref('John@gmail.com')
-const userName = ref('johnd')
-const firstName = ref('John')
-const lastName = ref('Doe')
-const password = ref('m38rmF$')
-const confirmPassword = ref('m38rmF$')
+const email = ref('test@mail.com')
+const userName = ref('TestUserName')
+const firstName = ref('TestName')
+const lastName = ref('TestLastName')
+const password = ref('password123')
+const confirmPassword = ref('password123')
 
 const store = useStore()
 
@@ -67,10 +66,8 @@ const handleRegister = async () => {
     email: email.value,
     username: userName.value,
     password: password.value,
-    name: {
-      firstname: firstName.value,
-      lastname: lastName.value,
-    },
+    first_name: firstName.value,
+    last_name: lastName.value,
   }
 
   await store.dispatch('users/registerUser', payload)
