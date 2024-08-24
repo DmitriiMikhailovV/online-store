@@ -44,19 +44,20 @@
 import { ref, onMounted, computed } from 'vue'
 import { useStore } from 'vuex'
 import { Button, Input, Select } from '@/components/generics'
+import { Category } from '@/utils/interfaces'
 
 const store = useStore()
 const searchInput = ref<string>('')
 const selectedCategory = ref<string>('')
 
-const categories = computed<Array<string>>(
+const categories = computed<Array<Category>>(
   () => store.state.products.categories
 )
 
 const categoryOptions = computed(() =>
   categories.value.map((category) => ({
-    value: category,
-    text: category,
+    value: category.id,
+    text: category.name,
   }))
 )
 

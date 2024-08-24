@@ -31,7 +31,7 @@ export interface ProductsState {
   userCart: UserCart | null
   purchasedUserCarts: Array<UserCart>
   allProducts: Array<Product>
-  categories: Array<string>
+  categories: Array<Category>
   isLoading: boolean
 }
 
@@ -53,4 +53,9 @@ export interface User {
   password: string
   first_name: string
   last_name: string
+}
+
+export interface Category {
+  id: number
+  name: string
 }

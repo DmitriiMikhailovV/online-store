@@ -1,6 +1,5 @@
 import { Module } from 'vuex'
 import axios from 'axios'
-import { decodeToken } from '@/utils/helpers'
 import { UsersState, RootState } from '@/utils/interfaces'
 
 const state: UsersState = {
