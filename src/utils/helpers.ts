@@ -1,8 +1,4 @@
-interface Token {
-  sub: number
-  user: string
-  iat: number
-}
+import { Token } from '@/utils/interfaces'
 
 export const decodeToken = (token: string): Token => {
   const parts = token.split('.')

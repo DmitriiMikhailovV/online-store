@@ -6,6 +6,5 @@
 </template>
 
 <script lang="ts" setup>
-import ProductList from '@/components/ProductList/ProductList.vue'
-import ProductFilters from '@/components/ProductFilters/ProductFilters.vue'
+import { ProductFilters, ProductList } from '@/components'
 </script>

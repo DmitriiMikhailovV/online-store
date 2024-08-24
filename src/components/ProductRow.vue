@@ -5,13 +5,13 @@
       class="bg-white rounded-lg shadow-lg w-full max-w-2xl max-h-screen overflow-y-auto p-6"
     >
       <div v-if="userCart" class="space-y-4">
-        <div class="flex space-x-4">
+        <div class="flex flex-wrap sm:flex-nowrap justify-start items-center">
           <div
             v-for="(product, index) in userCart.cart"
             :key="index"
-            class="flex items-center"
+            class="flex items-center mr-6 my-2"
           >
-            <span class="text-gray-700 font-semibold mr-2"
+            <span class="text-gray-700 font-semibold mx-2"
               >{{ product.quantity }}x</span
             >
             <img
@@ -41,10 +41,9 @@
 <script lang="ts" setup>
 import { ref, computed, defineProps } from 'vue'
 import { useRouter } from 'vue-router'
+import { ProductsCart, ModalWindow } from '@/components'
 import { formatCurrency } from '@/utils/helpers'
-import { UserCart } from '@/store/interfaces'
-import ProductsCart from '@/components/ProductsCart/ProductsCart.vue'
-import ModalWindow from '@/components/ModalWindow/ModalWindow.vue'
+import { UserCart } from '@/utils/interfaces'
 
 const props = defineProps<{
   userCart: UserCart

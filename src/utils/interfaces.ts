@@ -1,4 +1,23 @@
-import { Product } from '@/views/interfaces'
+export interface Token {
+  sub: number
+  user: string
+  iat: number
+}
+
+export interface Product {
+  id: number
+  title: string
+  price: number
+  category: string
+  description: string
+  image: string
+  rating: Rating
+}
+
+export interface Rating {
+  count: number
+  rate: number
+}
 
 export interface RootState {
   products: ProductsState
@@ -32,10 +51,6 @@ export interface User {
   email: string
   username: string
   password: string
-  name: Name
-}
-
-export interface Name {
-  firstname: string
-  lastname: string
+  first_name: string
+  last_name: string
 }

@@ -6,11 +6,11 @@
       class="bg-white rounded-lg shadow-lg w-full max-w-2xl max-h-screen overflow-y-auto p-4 m-4"
     >
       <div v-if="userCart" class="space-y-4">
-        <div class="flex space-x-4">
+        <div class="flex flex-wrap sm:flex-nowrap justify-start items-center">
           <div
             v-for="(product, index) in userCart.cart"
             :key="index"
-            class="flex items-center"
+            class="flex items-center mr-6 my-2"
           >
             <span class="text-gray-700 font-semibold mr-2">
               {{ product.quantity }}x
@@ -42,7 +42,7 @@
 <script lang="ts" setup>
 import { defineProps } from 'vue'
 import { formatCurrency, formatPurchaseDate } from '@/utils/helpers'
-import { UserCart } from '@/store/interfaces'
+import { UserCart } from '@/utils/interfaces'
 
 defineProps<{
   purchasedUserCarts: Array<UserCart & { purchaseDate: string }>

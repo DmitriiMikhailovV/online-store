@@ -15,10 +15,9 @@
 import { ref, computed, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-import LoginForm from '@/components/Forms/LoginForm.vue'
-import RegisterForm from '@/components/Forms/RegisterForm.vue'
-import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner.vue'
-import { User } from '@/store/interfaces'
+import { LoginForm, RegisterForm } from '@/components'
+import { LoadingSpinner } from '@/components/generics'
+import { User } from '@/utils/interfaces'
 
 const store = useStore()
 const router = useRouter()

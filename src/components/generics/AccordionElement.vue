@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="p-4 bg-white">
+    <div class="bg-white">
       <slot></slot>
     </div>
   </div>

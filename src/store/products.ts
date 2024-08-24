@@ -1,7 +1,6 @@
 import { Module } from 'vuex'
 import axios from 'axios'
-import { ProductsState, RootState } from './interfaces'
-import { Product } from '@/views/interfaces'
+import { ProductsState, RootState, Product } from '@/utils/interfaces'
 
 const state: ProductsState = {
   products: [],
@@ -50,13 +49,13 @@ const products: Module<ProductsState, RootState> = {
         let products = []
         if (filters?.category) {
           const response = await axios.get(
-            `https://fakestoreapi.com/products/category/${filters.category}`
+            `${process.env.VUE_APP_API_URL}/products/?category=${filters.category}`
           )
           products = response.data
         } else {
           if (state.allProducts.length === 0) {
             const response = await axios.get(
-              'https://fakestoreapi.com/products'
+              `${process.env.VUE_APP_API_URL}/products`
             )
             commit('SET_ALL_PRODUCTS', response.data)
             products = response.data
@@ -82,7 +81,7 @@ const products: Module<ProductsState, RootState> = {
       commit('SET_LOADING', true)
       try {
         const response = await axios.get(
-          `https://fakestoreapi.com/products/${id}`
+          `${process.env.VUE_APP_API_URL}/products/${id}`
         )
         commit('SET_PRODUCT_DETAIL', response.data)
       } catch (error) {
@@ -95,7 +94,7 @@ const products: Module<ProductsState, RootState> = {
       commit('SET_LOADING', true)
       try {
         const response = await axios.get(
-          'https://fakestoreapi.com/products/categories'
+          `${process.env.VUE_APP_API_URL}/categories`
         )
         commit('SET_CATEGORIES', response.data)
       } catch (error) {

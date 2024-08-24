@@ -16,12 +16,12 @@
       <div
         class="flex flex-col justify-between w-full md:w-1/2 overflow-y-auto rounded-lg ml-0 md:ml-6"
       >
-        <button
-          class="self-end bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full"
+        <Button
+          label="&lt; Back"
+          type="button"
+          styleType="secondary"
           @click="goBack"
-        >
-          &lt; Back
-        </button>
+        />
         <div class="text-right mt-4">
           <h2 class="text-2xl text-gray-900 font-semibold mb-2">
             {{ productDetail.title }}
@@ -43,32 +43,32 @@
           <div class="flex justify-between items-center">
             <label for="quantity" class="text-gray-700 text-xl">Quantity</label>
             <div class="flex items-center">
-              <button
-                class="bg-black text-white hover:bg-gray-700 px-2 py-1 w-6 rounded-l"
+              <Button
+                label="-"
+                type="button"
+                styleType="countDecrement"
                 @click="decreaseQuantity"
-              >
-                -
-              </button>
-              <input
+              />
+              <Input
                 type="text"
                 id="quantity"
                 v-model="quantity"
-                class="w-12 text-center bg-white border border-gray-300 px-2 py-1"
+                styleType="count"
               />
-              <button
-                class="bg-black text-white hover:bg-gray-700 px-2 py-1 w-6 rounded-r"
+              <Button
+                label="+"
+                type="button"
+                styleType="countIncrement"
                 @click="increaseQuantity"
-              >
-                +
-              </button>
+              />
             </div>
           </div>
-          <button
+          <Button
+            label="ADD TO CART"
+            type="button"
+            styleType="main"
             @click="toCart"
-            class="bg-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full"
-          >
-            ADD TO CART
-          </button>
+          />
         </div>
       </div>
     </div>
@@ -79,9 +79,9 @@
 import { ref, onMounted, computed, defineEmits } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
-import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner.vue'
-import { Product } from '@/views/interfaces'
+import { LoadingSpinner, Button, Input } from '@/components/generics'
 import { formatCurrency } from '@/utils/helpers'
+import { Product } from '@/utils/interfaces'
 
 const store = useStore()
 const route = useRoute()
