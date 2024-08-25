@@ -1,6 +1,8 @@
 import { Module } from 'vuex'
 import axios from 'axios'
 import { UsersState, RootState } from '@/utils/interfaces'
+import { useToast } from 'vue-toastification'
+import { AxiosError } from 'axios'
 
 const state: UsersState = {
   signedInUser: null,
@@ -28,6 +30,7 @@ const products: Module<UsersState, RootState> = {
 
   actions: {
     async loginUser({ commit, dispatch, state, rootState }, payload) {
+      const toast = useToast()
       commit('SET_LOADING', true)
       try {
         const response = await axios.post(
@@ -49,13 +52,17 @@ const products: Module<UsersState, RootState> = {
           }
           dispatch('products/setUserCart', userCart, { root: true })
         }
-      } catch (error) {
-        console.error('Failed to log in', error)
+        toast.success('Login successful')
+      } catch (error: unknown) {
+        if (error instanceof AxiosError) {
+          toast.error(`Login failed: ${error.response?.data.detail}`)
+        }
       } finally {
         commit('SET_LOADING', false)
       }
     },
     async registerUser({ commit }, payload) {
+      const toast = useToast()
       commit('SET_LOADING', true)
       try {
         await axios.post(`${process.env.VUE_APP_BASE_URL}/register/`, payload)
@@ -68,8 +75,12 @@ const products: Module<UsersState, RootState> = {
         )
         commit('SET_TOKEN', response.data.access)
         commit('SET_SIGNED_IN_USER', response.data.user)
+        toast.success('Registration successful')
       } catch (error) {
-        console.error('Failed to register', error)
+        if (error instanceof AxiosError) {
+          toast.error(`Registration failed: ${error.response?.data.email}`)
+          toast.error(`Registration failed: ${error.response?.data.username}`)
+        }
       } finally {
         commit('SET_LOADING', false)
       }
