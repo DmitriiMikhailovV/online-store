@@ -6,7 +6,7 @@
       >
         <img
           class="h-full object-contain"
-          :src="product.image"
+          :src="`data:image/jpeg;base64,${product.image}`"
           :alt="product.title"
           v-if="product.image"
         />

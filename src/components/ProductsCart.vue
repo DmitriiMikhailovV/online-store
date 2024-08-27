@@ -14,7 +14,7 @@
       class="flex flex-wrap sm:flex-nowrap justify-start items-center space-x-4 space-y-4"
     >
       <img
-        :src="product.image"
+        :src="`data:image/jpeg;base64,${product.image}`"
         :alt="product.title"
         class="h-20 w-16 object-contain rounded"
       />

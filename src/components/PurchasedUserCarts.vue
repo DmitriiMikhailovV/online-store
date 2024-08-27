@@ -16,7 +16,7 @@
               {{ product.quantity }}x
             </span>
             <img
-              :src="product.image"
+              :src="`data:image/jpeg;base64,${product.image}`"
               :alt="product.title"
               class="h-16 w-16 object-contain rounded"
             />

@@ -9,7 +9,7 @@
       class="max-w-5xl w-4/5 bg-white rounded-lg shadow-md flex flex-col md:flex-row p-6"
     >
       <img
-        :src="productDetail.image"
+        :src="`data:image/jpeg;base64,${productDetail.image}`"
         alt="Product Image"
         class="w-full md:w-1/2 rounded-lg object-contain mb-4 md:mb-0"
       />
